@@ -1,55 +1,21 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
-import { auth } from "../firebase";
+import React, { createContext, useState } from "react";
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
-// Custom hook to use the auth context
-export function useAuth() {
-  return useContext(AuthContext);
-}
+export const AuthProvider = ({ children }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-// Provider component to wrap the app and provide authentication context
-export function AuthProvider({ children }) {
-  const [currentUser, setCurrentUser] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  // Function to sign up a new user
-  function signup(email, password) {
-    return auth.createUserWithEmailAndPassword(email, password);
-  }
-
-  // Function to log in an existing user
-  function login(email, password) {
-    return auth.signInWithEmailAndPassword(email, password);
-  }
-
-  // Function to log out the current user
-  function logout() {
-    return auth.signOut();
-  }
-
-  // Effect to listen for authentication state changes
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      setCurrentUser(user);
-      setLoading(false);
-    });
-
-    return unsubscribe;
-  }, []);
-
-  // Create the value object to be provided by the context
-  const value = {
-    currentUser,
-    signup,
-    login,
-    logout,
+  const login = () => {
+    setIsAuthenticated(true);
   };
 
-  // Render the provider with the context value
+  const logout = () => {
+    setIsAuthenticated(false);
+  };
+
   return (
-    <AuthContext.Provider value={value}>
-      {!loading && children}
+    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+      {children}
     </AuthContext.Provider>
   );
-}
+};

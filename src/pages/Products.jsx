@@ -1,29 +1,23 @@
-// Products page
-
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import ProductCard from '../components/ProductCard';
 
 const Products = () => {
-  const [products, setProducts] = useState([]);
+  const products = [
+    {
+      image: 'https://via.placeholder.com/300x200',
+      title: 'Nike Sneaker (Green)',
+      price: 120,
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Animi, dignissimos.',
+    },
+    {
+      image: 'https://via.placeholder.com/300x200',
+      title: 'Nike Sneaker (Red)',
+      price: 120,
+      description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Animi, dignissimos.',
+    },
+    // Add more products as needed
+  ];
 
-  // Effect to fetch products when the component mounts
-  useEffect(() => {
-    // Function to fetch products from an API or database
-    const fetchProducts = async () => {
-      try {
-        // Simulated API call
-        const response = await fetch('https://api.example.com/products');
-        const data = await response.json();
-        setProducts(data);
-      } catch (error) {
-        console.error('Error fetching products:', error);
-      }
-    };
-
-    fetchProducts();
-  }, []);
-
-  // Render the products page
   return (
     <div className="products">
       {products.map((product, index) => (
