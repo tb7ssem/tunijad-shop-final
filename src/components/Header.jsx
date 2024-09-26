@@ -1,22 +1,22 @@
-import React, { useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import './Header.css';
-import logo from '../logo.svg';
 
 const Header = () => {
-  const { isAuthenticated, logout } = useContext(AuthContext);
-  const navigate = useNavigate();
+  // Hook to access authentication context
+  const { currentUser, logout } = useAuth();
 
-  const handleAuthAction = () => {
-    if (isAuthenticated) {
-      logout();
-      navigate('/');
-    } else {
-      navigate('/admin/login');
+  // Function to handle user logout
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.error('Failed to log out', error);
     }
   };
 
+  // Render the header component
   return (
     <header className="header">
       <div className="logo">
